@@ -25,6 +25,9 @@ echo ""
 echo "Enter a short description for the GitHub repository:"
 read -r REPO_DESCRIPTION
 
+echo "Enter the main Python filename (without .py):"
+read -r PYTHON_FILENAME
+
 echo "Creating GitHub repository..."
 gh repo create "blankenshipSec/$PROJECT_NAME" --public \
     --description "$REPO_DESCRIPTION" \
@@ -71,6 +74,22 @@ echo ""
 echo "Pulling files from GitHub..."
 git pull origin main
 
+cat > "$PYTHON_FILENAME.py" << EOF
+#!/usr/bin/env python3
+"""
+$PROJECT_NAME - $REPO_DESCRIPTION
+Author: Joshua Blankenship (blankenshipSec)
+GitHub: https://github.com/blankenshipSec/$PROJECT_NAME
+License: MIT
+"""
+EOF
+
+echo "Created $PYTHON_FILENAME.py"
+
+git add "$PYTHON_FILENAME.py"
+git commit -m "Add starter Python file"
+git push origin main
+
 echo ""
 echo "========================================"
 echo "  Setup Complete!"
@@ -81,6 +100,6 @@ echo "  Next steps:"
 echo "  1. Activate venv: source venv/Scripts/activate"
 echo "  2. Install packages: pip install rich"
 echo "  3. Freeze deps: pip freeze > requirements.txt"
-echo "  4. Start coding!"
+echo "  4. Open your starter file: code $PYTHON_FILENAME.py"
 echo "========================================"
 echo ""
