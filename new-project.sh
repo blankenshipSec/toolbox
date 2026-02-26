@@ -33,7 +33,7 @@ gh repo create "blankenshipSec/$PROJECT_NAME" --public \
 cd "$PROJECT_NAME"
 git branch -M main
 
-echo "Reposistory created and cloned."
+echo "Repository created and cloned."
 echo ""
 
 # ------ Set Up Virtual Python Environment ------
