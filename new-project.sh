@@ -49,17 +49,20 @@ echo "Adding .gitignore, LICENSE, and README to repository..."
 gh api repos/blankenshipSec/$PROJECT_NAME/contents/.gitignore \
     -X PUT \
     -f message="Add .gitignore" \
-    -f content="$(echo -e 'venv/\n__pycache__/\n*.pyc\n.env\n*.txt' | base64 -w 0)"
+    -f content="$(printf 'venv/\n__pycache__/\n*.pyc\n.env\n*.txt' | base64)" \
+    > /dev/null 2>&1
 
 gh api repos/blankenshipSec/$PROJECT_NAME/contents/LICENSE \
     -X PUT \
     -f message="Add MIT License" \
-    -f content="$(echo -e 'MIT License\n\nCopyright (c) 2026 Joshua Blankenship (blankenshipSec)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.' | base64 -w 0)"
+    -f content="$(printf 'MIT License\n\nCopyright (c) 2026 Joshua Blankenship (blankenshipSec)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.' | base64)" \
+    > /dev/null 2>&1
 
 gh api repos/blankenshipSec/$PROJECT_NAME/contents/README.md \
     -X PUT \
     -f message="Add placeholder README" \
-    -f content="$(echo -e "# $PROJECT_NAME\n\n> **Status:** Active Development" | base64 -w 0)"
+    -f content="$(printf "# $PROJECT_NAME\n\n> **Status:** Active Development" | base64)" \
+    > /dev/null 2>&1
 
 echo "Files added to GitHub."
 echo ""
