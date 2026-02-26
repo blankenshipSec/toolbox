@@ -91,6 +91,7 @@ git commit -m "Add starter Python file"
 git push origin main
 
 echo ""
+echo "Tip: Run this script again with: ~/Projects/toolbox/new-project/new-project.sh <project-name>"
 echo "========================================"
 echo "  Setup Complete!"
 echo "  Project: $PROJECT_NAME"
