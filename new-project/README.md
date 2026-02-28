@@ -1,32 +1,47 @@
-# new-project.sh
+# new-project
 
-A shell script that automates the full setup of a new Python security tool project for blankenshipSec.
+A shell function that automates project setup for blankenshipSec. Supports two workflows — creating a new security tool repository or adding a new script to the toolbox.
 
-## What It Does
+## Setup
 
-Running this script handles everything in one command:
+Add this line to your `.bashrc` to load the function into your shell:
+```bash
+source ~/Projects/toolbox/new-project/new-project.sh
+```
 
-- Creates a public GitHub repository with a custom description
-- Clones it locally into the correct folder
-- Renames the branch from master to main
-- Creates a Python virtual environment
-- Adds .gitignore, LICENSE, and README to GitHub automatically
-- Generates a starter Python file with shebang and docstring pre-filled
-- Commits and pushes the starter file to GitHub
+Then reload your shell:
+```bash
+source ~/.bashrc
+```
 
 ## Usage
 ```bash
-~/Projects/toolbox/new-project/new-project.sh <project-name>
+new-project <name>
 ```
 
-## Example
-```bash
-~/Projects/toolbox/new-project/new-project.sh log-analyzer
+You will be prompted to select a workflow:
 ```
+What are you creating?
+  1) New security tool (new GitHub repo)
+  2) New toolbox script (add to toolbox)
+```
+
+## Workflow 1 — New Security Tool
+
+Creates a new public GitHub repository under blankenshipSec, clones it into `~/Projects/blankenshipSec/`, sets up a Python virtual environment, adds .gitignore, LICENSE, and README, generates a starter Python file with shebang and docstring pre-filled, and navigates into the project folder with the venv activated.
 
 You will be prompted for:
 1. A short description for the GitHub repository
 2. The main Python filename (without .py)
+
+## Workflow 2 — New Toolbox Script
+
+Creates a new subfolder inside `~/Projects/toolbox/` with a starter script file and README, then commits and pushes to the toolbox repository.
+
+You will be prompted for:
+1. A short description of what the script does
+2. The script filename (without extension)
+3. The file extension (sh or py)
 
 ## Requirements
 
@@ -34,8 +49,6 @@ You will be prompted for:
 - GitHub CLI (`gh`) — authenticated with your GitHub account
 - Python 3.10+
 
-## Notes
+## Author
 
-- Requires GitHub CLI to be authenticated via `gh auth login`
-- Virtual environment must be activated manually after setup
-- Add packages with `pip install` then freeze with `pip freeze > requirements.txt`
+Joshua Blankenship (blankenshipSec)

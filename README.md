@@ -4,11 +4,18 @@ A collection of shell and Python automation scripts for security workflows and d
 
 Built by [blankenshipSec](https://github.com/blankenshipSec) | [Portfolio](https://jblankenship.me)
 
+## Setup
+
+Add this line to your `.bashrc` to load all toolbox functions into your shell:
+```bash
+source ~/Projects/toolbox/new-project/new-project.sh
+```
+
 ## Scripts
 
 | Script | Language | Description |
 |--------|----------|-------------|
-| [new-project](./new-project/) | Shell | Automates new Python security tool project setup |
+| [new-project](./new-project/) | Shell | Creates new security tool repos or adds scripts to the toolbox |
 
 ## Usage
 
