@@ -22,19 +22,22 @@ new-project() {
     echo ""
 
     # ------ Workflow Selection ------
-    echo "What are you creating?"
-    echo "  1) New security tool (new GitHub repo)"
-    echo "  2) New toolbox script (add to toolbox)"
+echo "What are you creating?"
+    echo "  1) New Python security tool (new GitHub repo)"
+    echo "  2) New PowerShell security tool (new GitHub repo)"
+    echo "  3) New toolbox script (add to toolbox)"
     echo ""
-    echo "Enter 1 or 2:"
+    echo "Enter 1, 2, or 3:"
     read -r WORKFLOW
 
     if [ "$WORKFLOW" = "1" ]; then
         _new_security_tool "$PROJECT_NAME"
     elif [ "$WORKFLOW" = "2" ]; then
+        _new_powershell_tool "$PROJECT_NAME"
+    elif [ "$WORKFLOW" = "3" ]; then
         _new_toolbox_script "$PROJECT_NAME"
     else
-        echo "Error: Invalid selection. Enter 1 or 2."
+        echo "Error: Invalid selection. Enter 1, 2, or 3."
         return 1
     fi
 }
@@ -130,7 +133,97 @@ EOF
     echo ""
 }
 
-# ------ Workflow 2: New Toolbox Script ------
+# ------ Workflow 2: New PowerShell Security Tool ------
+_new_powershell_tool() {
+    local PROJECT_NAME=$1
+    local BASE_DIR=~/Projects/blankenshipSec
+
+    echo "Enter a short description for the GitHub repository:"
+    read -r REPO_DESCRIPTION
+
+    echo "Enter the main PowerShell filename (without .ps1):"
+    read -r PS_FILENAME
+
+    echo "Creating GitHub repository..."
+    gh repo create "blankenshipSec/$PROJECT_NAME" --public \
+        --description "$REPO_DESCRIPTION"
+
+    cd "$BASE_DIR" || return 1
+    gh repo clone "blankenshipSec/$PROJECT_NAME"
+    cd "$PROJECT_NAME" || return 1
+    git branch -M main
+
+    echo "Repository created and cloned."
+    echo ""
+
+    # ------ Add GitHub Files ------
+    echo "Adding .gitignore, LICENSE, and README to repository..."
+
+    gh api repos/blankenshipSec/$PROJECT_NAME/contents/.gitignore \
+        -X PUT \
+        -f message="Add .gitignore" \
+        -f content="$(printf '*.log\n*.tmp\n*.bak\n.env' | base64)" \
+        > /dev/null 2>&1
+
+    gh api repos/blankenshipSec/$PROJECT_NAME/contents/LICENSE \
+        -X PUT \
+        -f message="Add MIT License" \
+        -f content="$(printf 'MIT License\n\nCopyright (c) 2026 Joshua Blankenship (blankenshipSec)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.' | base64)" \
+        > /dev/null 2>&1
+
+    gh api repos/blankenshipSec/$PROJECT_NAME/contents/README.md \
+        -X PUT \
+        -f message="Add placeholder README" \
+        -f content="$(printf "# $PROJECT_NAME\n\n> **Status:** Active Development" | base64)" \
+        > /dev/null 2>&1
+
+    echo "Files added to GitHub."
+    echo ""
+
+    # ------ Pull and Generate Starter File ------
+    echo "Pulling files from GitHub..."
+    git pull origin main
+
+    cat > "$PS_FILENAME.ps1" << EOF
+<#
+.SYNOPSIS
+    $PROJECT_NAME - $REPO_DESCRIPTION
+
+.DESCRIPTION
+    $REPO_DESCRIPTION
+
+.AUTHOR
+    Joshua Blankenship (blankenshipSec)
+
+.LINK
+    https://github.com/blankenshipSec/$PROJECT_NAME
+
+.LICENSE
+    MIT
+#>
+EOF
+
+    echo "Created $PS_FILENAME.ps1"
+
+    git add "$PS_FILENAME.ps1"
+    git commit -m "Add starter PowerShell file"
+    git push origin main
+
+    echo ""
+    echo "========================================"
+    echo "  Setup Complete!"
+    echo "  Project: $PROJECT_NAME"
+    echo "  Location: $(pwd)"
+    echo ""
+    echo "  Next steps:"
+    echo "  1. Open your starter file: code $PS_FILENAME.ps1"
+    echo "  2. Run in PowerShell:      .\\$PS_FILENAME.ps1"
+    echo "  3. Run as Admin:           Start-Process PowerShell -Verb RunAs"
+    echo "========================================"
+    echo ""
+}
+
+# ------ Workflow 3: New Toolbox Script ------
 _new_toolbox_script() {
     local SCRIPT_NAME=$1
     local TOOLBOX_DIR=~/Projects/toolbox
