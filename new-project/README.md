@@ -34,7 +34,15 @@ You will be prompted for:
 1. A short description for the GitHub repository
 2. The main Python filename (without .py)
 
-## Workflow 2 — New Toolbox Script
+## Workflow 2 — New PowerShell Security Tool
+
+Creates a new public GitHub repository under blankenshipSec, clones it into `~/Projects/blankenshipSec/`, adds .gitignore, LICENSE, and README, generates a starter PowerShell file with comment-based help header pre-filled, and navigates into the project folder.
+
+You will be prompted for:
+1. A short description for the GitHub repository
+2. The main PowerShell filename (without .ps1)
+
+## Workflow 3 — New Toolbox Script
 
 Creates a new subfolder inside `~/Projects/toolbox/` with a starter script file and README, then commits and pushes to the toolbox repository.
 
@@ -47,7 +55,8 @@ You will be prompted for:
 
 - Git
 - GitHub CLI (`gh`) — authenticated with your GitHub account
-- Python 3.10+
+- Python 3.10+ (for Python projects)
+- PowerShell 7+ (for PowerShell projects)
 
 ## Author
 
